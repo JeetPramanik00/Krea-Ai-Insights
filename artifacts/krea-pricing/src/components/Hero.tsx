@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+
 
 interface HeroProps {
   billingPeriod: "Monthly" | "Yearly";

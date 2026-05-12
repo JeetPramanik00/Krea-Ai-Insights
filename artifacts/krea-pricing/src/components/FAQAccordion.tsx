@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+"use client";
+
+import { useState } from "react";
 
 const FAQS = [
   { q: "What's the difference between plans?", a: "Basic offers core AI generation features, Pro unlocks all models and workflow automation, Max gives unlimited access and concurrency. Business and Enterprise add team management and admin controls." },

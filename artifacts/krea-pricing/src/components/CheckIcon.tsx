@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function CheckIcon() {
   return (
     <svg viewBox="0 0 20 20" className="w-4 h-4 shrink-0" fill="none">

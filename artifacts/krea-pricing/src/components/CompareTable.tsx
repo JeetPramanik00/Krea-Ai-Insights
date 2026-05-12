@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+"use client";
+
+import { useState, Fragment } from "react";
 import CheckIcon from "./CheckIcon";
 
 const TABLE_DATA = [
@@ -125,8 +127,8 @@ export default function CompareTable() {
                 </tr>
               </thead>
               <tbody>
-                {TABLE_DATA.map((group, groupIdx) => (
-                  <React.Fragment key={group.group}>
+                {TABLE_DATA.map((group) => (
+                  <Fragment key={group.group}>
                     <tr>
                       <td colSpan={7} className="text-[#666666] text-xs uppercase tracking-widest py-3 px-4 bg-[#0a0a0a] font-medium mt-4 pt-8">
                         {group.group}
@@ -143,7 +145,7 @@ export default function CompareTable() {
                         <td className="py-3 px-4 text-center"><div className="flex justify-center"><CellValue value={row.enterprise} /></div></td>
                       </tr>
                     ))}
-                  </React.Fragment>
+                  </Fragment>
                 ))}
               </tbody>
             </table>

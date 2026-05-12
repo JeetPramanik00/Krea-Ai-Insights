@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function BottomCTA() {
   return (
     <section className="text-center py-24 border-t border-[#1f1f1f]">

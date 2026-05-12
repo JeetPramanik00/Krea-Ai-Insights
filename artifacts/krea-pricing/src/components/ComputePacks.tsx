@@ -1,5 +1,3 @@
-import React from "react";
-
 const PACKS = [
   { amount: "2000", price: "20" },
   { amount: "5000", price: "45" },

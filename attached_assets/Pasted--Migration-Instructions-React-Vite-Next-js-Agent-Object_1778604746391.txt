@@ -1,0 +1,246 @@
+# Migration Instructions: React + Vite → Next.js
+
+## Agent Objective
+Migrate the existing Krea pricing page from **React + Vite + TypeScript + Tailwind CSS** to **Next.js + TypeScript + Tailwind CSS**. All UI, components, logic, and styling remain **100% identical**. Only the framework scaffolding changes.
+
+---
+
+## 1. Project Initialization
+
+Trash the old Vite project root. Scaffold fresh:
+
+```bash
+npx create-next-app@latest krea-pricing \
+  --typescript \
+  --tailwind \
+  --eslint \
+  --app \
+  --src-dir \
+  --no-import-alias
+```
+
+> Use the **App Router** (`/src/app`). Do NOT use Pages Router.
+
+---
+
+## 2. Tailwind Config — Keep Identical
+
+Copy your existing `tailwind.config.ts` content exactly. Only update the `content` paths:
+
+```ts
+content: [
+  "./src/app/**/*.{ts,tsx}",
+  "./src/components/**/*.{ts,tsx}",
+],
+```
+
+Everything else (custom colors, fonts, spacing) stays the same.
+
+---
+
+## 3. Global Styles — `src/app/globals.css`
+
+Replace the default Next.js `globals.css` with your existing `index.css` content verbatim. The Tailwind directives stay the same:
+
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* paste all your existing custom CSS below */
+```
+
+---
+
+## 4. Component Files — Direct Copy
+
+Copy your entire `src/components/` folder **as-is** into the new project's `src/components/`. Zero changes needed:
+
+```
+src/
+  components/
+    Hero.tsx          ← copy as-is
+    PlanCard.tsx      ← copy as-is
+    IndividualPlans.tsx
+    TeamPlans.tsx
+    ComputePacks.tsx
+    CompareTable.tsx
+    FAQAccordion.tsx
+    BottomCTA.tsx
+```
+
+None of these components need any modification since they're all plain React components — Next.js is fully compatible.
+
+---
+
+## 5. Root Page — Replace `App.tsx` with `page.tsx`
+
+Delete the default `src/app/page.tsx`. Create a new one and paste your old `App.tsx` JSX content into it:
+
+```tsx
+// src/app/page.tsx
+
+import Hero from "@/components/Hero";
+import IndividualPlans from "@/components/IndividualPlans";
+import TeamPlans from "@/components/TeamPlans";
+import ComputePacks from "@/components/ComputePacks";
+import CompareTable from "@/components/CompareTable";
+import FAQAccordion from "@/components/FAQAccordion";
+import BottomCTA from "@/components/BottomCTA";
+
+export default function Home() {
+  return (
+    <main className="bg-[#0a0a0a] min-h-screen">
+      <Hero />
+      <IndividualPlans />
+      <TeamPlans />
+      <ComputePacks />
+      <CompareTable />
+      <FAQAccordion />
+      <BottomCTA />
+    </main>
+  );
+}
+```
+
+---
+
+## 6. Root Layout — `src/app/layout.tsx`
+
+Replace the default layout with this, carrying over your font (Inter) setup:
+
+```tsx
+// src/app/layout.tsx
+
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+});
+
+export const metadata: Metadata = {
+  title: "Krea – Pricing",
+  description: "Choose the right Krea plan for you",
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en">
+      <body className={inter.className}>{children}</body>
+    </html>
+  );
+}
+```
+
+> This replaces what was previously the `<link>` Google Fonts tag in your old Vite `index.html`.
+
+---
+
+## 7. Delete Vite-Specific Files
+
+Remove these — they have no place in Next.js:
+
+```
+vite.config.ts        ← delete
+index.html            ← delete
+src/main.tsx          ← delete
+src/vite-env.d.ts     ← delete
+```
+
+---
+
+## 8. Handle `"use client"` Directive
+
+Any component that uses:
+- `useState` (toggle monthly/yearly, FAQ accordion open state)
+- `useEffect`
+- Browser events (`onClick`, `onChange`)
+
+Must have this added as the **very first line** of that file:
+
+```tsx
+"use client";
+```
+
+Specifically, these components will need it:
+- `Hero.tsx` — monthly/yearly toggle state
+- `FAQAccordion.tsx` — open/close accordion state
+- `PlanCard.tsx` — if it holds any interactive state
+
+Pure display components with no hooks (like `BottomCTA.tsx`, `ComputePacks.tsx`) do **not** need it — they default to Server Components which is fine.
+
+---
+
+## 9. Image Handling — Vite `img` → Next.js `Image`
+
+If any component uses raw `<img>` tags (hero background, chip illustrations), swap them for Next.js `<Image>`:
+
+```tsx
+// Before (Vite)
+<img src="/hero-bg.jpg" alt="hero" className="..." />
+
+// After (Next.js)
+import Image from "next/image";
+<Image src="/hero-bg.jpg" alt="hero" fill className="object-cover" />
+```
+
+Move all static assets from `src/assets/` → `public/` folder. Next.js serves everything in `/public` at the root path.
+
+---
+
+## 10. `tsconfig.json` — Verify Path Aliases
+
+`create-next-app` generates this automatically, but confirm it has:
+
+```json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}
+```
+
+---
+
+## 11. Run & Verify
+
+```bash
+npm run dev
+```
+
+Open `http://localhost:3000`. The page must look **pixel-identical** to the Vite version. Checklist:
+
+- [ ] Dark background renders correctly
+- [ ] All 3 individual plan cards visible
+- [ ] Monthly/Yearly toggle switches prices
+- [ ] Compute packs row renders
+- [ ] Comparison table columns align
+- [ ] FAQ accordion opens/closes
+- [ ] No hydration errors in console
+- [ ] No missing font warnings
+
+---
+
+## Summary of What Changed vs What Didn't
+
+| Item | Changed? |
+|---|---|
+| All component `.tsx` files | ❌ No |
+| Tailwind classes & design tokens | ❌ No |
+| UI layout, spacing, colors | ❌ No |
+| `App.tsx` → `page.tsx` | ✅ Yes (rename + wrap) |
+| `index.css` → `globals.css` | ✅ Yes (move) |
+| Font loading | ✅ Yes (`next/font` instead of `<link>`) |
+| Image tags | ✅ Yes (`next/image` if used) |
+| `"use client"` on interactive components | ✅ Yes (add where needed) |
+| Vite config & `index.html` | ✅ Yes (deleted) |

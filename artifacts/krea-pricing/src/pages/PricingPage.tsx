@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+"use client";
+
+import { useState } from "react";
 import Hero from "@/components/Hero";
 import IndividualPlans from "@/components/IndividualPlans";
 import TeamPlans from "@/components/TeamPlans";

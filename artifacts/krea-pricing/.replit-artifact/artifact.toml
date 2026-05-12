@@ -19,13 +19,7 @@ run = "pnpm --filter @workspace/krea-pricing run dev"
 
 [services.production]
 build = [ "pnpm", "--filter", "@workspace/krea-pricing", "run", "build" ]
-publicDir = "artifacts/krea-pricing/dist/public"
-serve = "static"
-
-[[services.production.rewrites]]
-from = "/*"
-to = "/index.html"
+run = "pnpm --filter @workspace/krea-pricing run start"
 
 [services.env]
 PORT = "19778"
-BASE_PATH = "/"
