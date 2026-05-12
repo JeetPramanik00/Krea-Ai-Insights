@@ -1,0 +1,354 @@
+Let me study all three screenshots carefully before writing the instructions.
+
+# Replit Agent Fix Instructions — Krea Pricing Page
+
+## What I Compared
+- **Image 1**: Original — Monthly toggle active ($9 / $35 / $105)
+- **Image 2**: Original — Yearly toggle active (strikethrough prices + discounts shown)
+- **Image 3**: Replit agent's current output — multiple issues identified
+
+---
+
+## CRITICAL BUG LIST (Fix All of These)
+
+---
+
+### BUG #1 — Hero Heading Is Completely Wrong
+
+**Current (Replit output):**
+```
+"The world's best creative AI studio"  ← large fabricated H1
+"Join over 10 million users..."        ← fabricated subtitle
+```
+
+**Should be (original):**
+```
+WHY CHOOSE KREA                         ← tiny all-caps muted label (~11px)
+[paragraph body text]                   ← "Krea is the world's best creative AI studio. 
+                                           With industry leading generation speeds, over 
+                                           150 models including Nano Banana, Topaz, Magnific,
+                                           Swarmlore, and a community of over 10 million users. 
+                                           Krea is the best platform to create with AI."
+```
+
+**Fix:**
+```tsx
+<section className="relative w-full overflow-hidden">
+  <div className="relative z-10 px-8 py-12 max-w-[520px]">
+    <p className="text-[#555] text-[11px] font-semibold tracking-widest uppercase mb-3">
+      Why choose Krea
+    </p>
+    <p className="text-[#888] text-sm leading-relaxed">
+      Krea is the world's best creative AI studio. With industry leading generation 
+      speeds, over 150 models including Nano Banana, Topaz, Magnific, Swarmlore, and 
+      a community of over 10 million users. Krea is the best platform to create with AI.
+    </p>
+  </div>
+</section>
+```
+
+- No `<h1>`, no large display text in the hero
+- Warrior image positioned absolute right, bleeds off-screen
+- Left-to-right gradient: `from-[#0a0a0a] via-[#0a0a0a]/70 to-transparent`
+
+---
+
+### BUG #2 — Checkmark Style Is Wrong Across ALL Cards
+
+**Current (Replit):** Filled green circle icons `●` with a check inside — looks like a toggle/radio button
+
+**Should be (original):** Simple clean `✓` checkmark character in green, NO background circle, NO border
+
+```tsx
+// WRONG — remove this
+<div className="w-4 h-4 rounded-full bg-green-500 flex items-center justify-center">
+  <Check size={10} />
+</div>
+
+// CORRECT — use this
+<span className="text-[#22c55e] text-sm mr-2">✓</span>
+```
+
+Apply this fix to: Basic card, Pro card, Max card, Business card, Enterprise card — every single feature list item.
+
+---
+
+### BUG #3 — Yearly Toggle Pricing Display Is Incomplete
+
+**Original behavior (yearly active):**
+- Old price shown with a strikethrough line through it
+- New discounted price shown in white bold below/next to it  
+- A green or blue `"saving 20%"` badge appears on the card
+- Business card shows `$200` struck through → `$160`
+
+**Current Replit:** Toggle exists but the strikethrough + badge behavior may not be properly wired
+
+**Fix — price display logic:**
+```tsx
+// In each PlanCard
+{billing === 'yearly' ? (
+  <div className="flex flex-col">
+    <span className="text-[#555] text-2xl line-through">${monthlyPrice}</span>
+    <span className="text-white text-5xl font-bold">${yearlyPrice}</span>
+    <span className="text-xs bg-[#22c55e]/20 text-[#22c55e] px-2 py-0.5 
+                     rounded-full w-fit mt-1">saving 20%</span>
+  </div>
+) : (
+  <span className="text-white text-5xl font-bold">${monthlyPrice}</span>
+)}
+```
+
+**Yearly prices to use:**
+| Plan | Monthly | Yearly (per mo) |
+|---|---|---|
+| Basic | $9 | $6 |
+| Pro | $35 | $25 |
+| Max | $105 | $74 |
+| Business | $200 | $160 |
+
+---
+
+### BUG #4 — "Made with Agent" Badge on Max Card — REMOVE
+
+**Current (Replit):** A `"Made with Agent"` badge appears on the Max card
+**Original:** This badge does NOT exist on any pricing card
+
+Delete it entirely. It's an artifact from Replit's generation, not part of the design.
+
+---
+
+### BUG #5 — Compute Pack Cards Have No Chip Illustration
+
+**Current (Replit):** Plain dark boxes with just the number and price. No visual inside the card.
+
+**Original:** Each pack card has a stylized CPU/chip illustration — dark square with inner grid lines and corner LED dots.
+
+**Fix — add this SVG to each compute pack card:**
+```tsx
+function ChipIllustration() {
+  return (
+    <svg width="100" height="100" viewBox="0 0 100 100" fill="none" 
+         className="mx-auto my-3">
+      <rect width="100" height="100" rx="6" fill="#0d0d0d"/>
+      {/* Grid lines */}
+      <line x1="33" y1="0" x2="33" y2="100" stroke="#1a1a1a" strokeWidth="0.5"/>
+      <line x1="66" y1="0" x2="66" y2="100" stroke="#1a1a1a" strokeWidth="0.5"/>
+      <line x1="0" y1="33" x2="100" y2="33" stroke="#1a1a1a" strokeWidth="0.5"/>
+      <line x1="0" y1="66" x2="100" y2="66" stroke="#1a1a1a" strokeWidth="0.5"/>
+      {/* Chip die center */}
+      <rect x="28" y="28" width="44" height="44" rx="3" 
+            stroke="#2a2a2a" strokeWidth="1" fill="#111"/>
+      {/* Inner chip detail */}
+      <rect x="36" y="36" width="28" height="28" rx="2" 
+            stroke="#333" strokeWidth="0.5" fill="none"/>
+      {/* Corner LED dots */}
+      <circle cx="6" cy="6" r="2.5" fill="#22c55e" opacity="0.9"/>
+      <circle cx="94" cy="6" r="2.5" fill="#22c55e" opacity="0.9"/>
+      <circle cx="6" cy="94" r="2.5" fill="#22c55e" opacity="0.9"/>
+      <circle cx="94" cy="94" r="2.5" fill="#22c55e" opacity="0.9"/>
+    </svg>
+  )
+}
+```
+
+**Compute pack card structure:**
+```tsx
+<div className="bg-[#111] border border-[#1f1f1f] rounded-xl p-4 
+                flex flex-col items-center w-[180px] flex-shrink-0">
+  <span className="text-white text-3xl font-bold">{amount}</span>
+  <ChipIllustration />
+  <span className="text-[#888] text-xs mb-2">{price}</span>
+  <button className="w-full text-xs py-1.5 rounded-lg border border-[#333] 
+                     text-[#666] cursor-default">
+    Pro plan required
+  </button>
+</div>
+```
+
+All 5 cards in a `flex flex-row gap-4` — NO grid, NO wrapping.
+
+---
+
+### BUG #6 — FAQ Toggle Icon Is Wrong
+
+**Current (Replit):** Uses `+` icon for all FAQ items
+
+**Original:** Uses `–` (minus/dash) icon — all items show `–` by default, toggling opens/closes them
+
+```tsx
+// WRONG
+<span>+</span>
+
+// CORRECT
+<span className="text-white text-xl font-light">–</span>
+```
+
+Each FAQ row: question text left, `–` right. On click, answer expands below. Icon stays `–` always (original design choice).
+
+---
+
+### BUG #7 — Background Color Is Not Dark Enough
+
+**Current (Replit):** Background reads as a medium-dark gray — cards and background are too similar in lightness
+
+**Original:** True near-black — multiple precise dark shades working together
+
+**Apply these everywhere:**
+```css
+/* Page background */
+background: #0a0a0a;
+
+/* Card surface */
+background: #111111;
+
+/* Card border */
+border: 1px solid #1f1f1f;
+
+/* Elevated card (Pro/featured) */
+background: #141414;
+
+/* Table row alternating */
+background: #0f0f0f / #111111;
+
+/* Sidebar background (Compare table) */
+background: #0d0d0d;
+```
+
+In `globals.css`:
+```css
+body {
+  background-color: #0a0a0a;
+  color: #ffffff;
+}
+```
+
+---
+
+### BUG #8 — Pro Card Visual Treatment Needs Strengthening
+
+The Pro card must be distinctly different. Apply ALL of these together:
+
+```tsx
+<div className={`
+  bg-[#111111]
+  border border-[#1f1f1f]
+  border-t-[2.5px] border-t-[#4f6ef7]
+  rounded-2xl p-6
+  shadow-[0_0_0_1px_rgba(79,110,247,0.2),0_12px_40px_rgba(79,110,247,0.1)]
+  relative
+`}>
+  {/* Most popular badge — sits above the card title */}
+  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+    <span className="bg-[#4f6ef7] text-white text-xs px-3 py-1 
+                     rounded-full font-medium whitespace-nowrap">
+      Most popular
+    </span>
+  </div>
+  ...
+</div>
+```
+
+Pro CTA button — solid blue, NOT outlined:
+```tsx
+<button className="w-full bg-[#4f6ef7] hover:bg-[#3d5ce6] text-white 
+                   py-2.5 rounded-lg font-medium transition-colors">
+  Get Pro →
+</button>
+```
+
+Basic and Max CTA — outlined, NOT filled:
+```tsx
+<button className="w-full border border-[#333] hover:border-[#555] 
+                   text-white py-2.5 rounded-lg font-medium transition-colors">
+  Get Basic →
+</button>
+```
+
+---
+
+### BUG #9 — "AI-powered Nodes Agent" Badge Styling
+
+In Pro card features list, the `"new"` badge next to "AI-powered Nodes Agent" must look like:
+
+```tsx
+<li className="flex items-start gap-2 text-sm text-[#ccc]">
+  <span className="text-[#22c55e] mt-0.5">✓</span>
+  <span>
+    AI-powered Nodes Agent
+    <span className="ml-2 bg-[#4f6ef7] text-white text-[10px] 
+                     px-1.5 py-0.5 rounded-full align-middle">
+      new
+    </span>
+  </span>
+</li>
+```
+
+Same `"new"` badge treatment for `"Audit logs"` in Enterprise card.
+
+---
+
+### BUG #10 — Business Card Seat Selector Row
+
+The Business card must show a pill-tab selector for seat count. In original it shows:
+`1 | 5 | 10 | MX | 25 | 50 | 100 | 1K`
+
+```tsx
+const [selectedSeats, setSelectedSeats] = useState('1');
+const seats = ['1','5','10','MX','25','50','100','1K'];
+
+<div className="flex flex-wrap gap-1 my-4">
+  {seats.map(s => (
+    <button
+      key={s}
+      onClick={() => setSelectedSeats(s)}
+      className={`px-2 py-1 text-xs rounded border transition-colors ${
+        selectedSeats === s 
+          ? 'border-[#4f6ef7] text-white bg-[#4f6ef7]/10' 
+          : 'border-[#222] text-[#666] hover:border-[#444]'
+      }`}
+    >
+      {s}
+    </button>
+  ))}
+</div>
+```
+
+---
+
+## Typography Reference (Apply Globally)
+
+| Element | Size | Weight | Color |
+|---|---|---|---|
+| Section title ("For Individual Creators") | `20px` | `500` | `#ffffff` |
+| Plan name | `18px` | `600` | `#ffffff` |
+| Price number | `48px` | `700` | `#ffffff` |
+| `/mo` label | `14px` | `400` | `#888888` |
+| Compute units line | `13px` | `400` | `#666666` |
+| Feature list items | `13px` | `400` | `#cccccc` |
+| Card subtitle | `12px` | `400` | `#666666` |
+| Section subtitle | `14px` | `400` | `#888888` |
+| FAQ question | `15px` | `400` | `#ffffff` |
+| "WHY CHOOSE KREA" label | `11px` | `600` | `#555555` |
+
+Font: **Inter** from `next/font/google`, weights `300 400 500 600 700`
+
+---
+
+## Final Verification Checklist for Replit Agent
+
+Before submitting, screenshot the output and verify:
+
+- [ ] Hero: Small muted label "WHY CHOOSE KREA" — no large H1
+- [ ] Hero: Warrior image bleeds to right with gradient fade
+- [ ] Toggle: Switching to Yearly shows strikethrough old price + new price + "saving 20%" badge
+- [ ] All 3 individual plan cards in one horizontal row, equal height
+- [ ] Pro card: blue top border + glow shadow + "Most popular" floating badge + solid blue button
+- [ ] All checkmarks: simple green ✓ text, no filled circles
+- [ ] "Made with Agent" badge: completely removed from Max card
+- [ ] Compute packs: single horizontal row, chip SVG illustration inside each card
+- [ ] FAQ icons: `–` dash, not `+` plus
+- [ ] Background: pure `#0a0a0a` — zero gray tinge
+- [ ] Cards: `#111111` surface, `#1f1f1f` border
+- [ ] Business card: seat selector row (`1 5 10 MX 25 50 100 1K`) present
+- [ ] "new" badges: blue pill on "AI-powered Nodes Agent" and "Audit logs"
+- [ ] Zero console errors

@@ -21,15 +21,14 @@ export default function FAQAccordion() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const toggle = (idx: number) => {
-    if (openIndex === idx) setOpenIndex(null);
-    else setOpenIndex(idx);
+    setOpenIndex(openIndex === idx ? null : idx);
   };
 
   return (
     <section className="max-w-2xl mx-auto">
       <h2 className="text-white text-3xl font-bold mb-8 text-center">Frequently Asked Questions</h2>
-      
-      <div className="space-y-0">
+
+      <div>
         {FAQS.map((faq, idx) => {
           const isOpen = openIndex === idx;
           return (
@@ -39,27 +38,23 @@ export default function FAQAccordion() {
                 onClick={() => toggle(idx)}
                 data-testid={`faq-toggle-${idx}`}
               >
-                <div className="flex items-center gap-3">
-                  <span className="text-white text-base font-medium">{faq.q}</span>
+                <div className="flex items-center gap-3 flex-1 min-w-0">
+                  <span className="text-white text-[15px] font-normal">{faq.q}</span>
                   {faq.badge && (
-                    <span className="bg-[#4f6ef7]/20 text-[#4f6ef7] text-xs px-2 py-0.5 rounded-full font-medium border border-[#4f6ef7]/30">
+                    <span className="shrink-0 bg-[#4f6ef7]/20 text-[#4f6ef7] text-xs px-2 py-0.5 rounded-full font-medium border border-[#4f6ef7]/30">
                       {faq.badge}
                     </span>
                   )}
                 </div>
-                <span className="text-white text-xl leading-none ml-4 shrink-0 font-light">
-                  {isOpen ? "–" : "+"}
-                </span>
+                <span className="text-white text-xl font-light ml-4 shrink-0">–</span>
               </button>
-              
-              <div 
+
+              <div
                 className={`overflow-hidden transition-all duration-300 ease-in-out ${
                   isOpen ? "max-h-40 opacity-100 mt-2" : "max-h-0 opacity-0"
                 }`}
               >
-                <p className="text-[#666666] text-sm pb-2">
-                  {faq.a}
-                </p>
+                <p className="text-[#666666] text-sm pb-2">{faq.a}</p>
               </div>
             </div>
           );

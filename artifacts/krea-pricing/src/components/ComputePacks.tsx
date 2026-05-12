@@ -1,40 +1,25 @@
 const PACKS = [
-  { amount: "2000", price: "20" },
-  { amount: "5000", price: "45" },
-  { amount: "10000", price: "85" },
-  { amount: "24000", price: "190" },
-  { amount: "50000", price: "390" },
+  { amount: "2000", price: "$20" },
+  { amount: "5000", price: "$45" },
+  { amount: "10000", price: "$85" },
+  { amount: "24000", price: "$190" },
+  { amount: "50000", price: "$390" },
 ];
 
-function GPUChip() {
+function ChipIllustration() {
   return (
-    <svg viewBox="0 0 120 90" className="w-24 h-[72px] my-3">
-      <rect x="5" y="5" width="110" height="80" rx="6" fill="#0d0d0d" stroke="#222" strokeWidth="1"/>
-      <rect x="25" y="20" width="70" height="50" rx="3" fill="#151515" stroke="#333" strokeWidth="1"/>
-      
-      {/* Corner LED dots */}
-      <circle cx="12" cy="12" r="3" fill="#22c55e" opacity="0.8"/>
-      <circle cx="108" cy="12" r="3" fill="#22c55e" opacity="0.8"/>
-      <circle cx="12" cy="78" r="3" fill="#22c55e" opacity="0.8"/>
-      <circle cx="108" cy="78" r="3" fill="#22c55e" opacity="0.8"/>
-      
-      {/* Center processor label */}
-      <text x="60" y="44" textAnchor="middle" fill="#666" fontSize="8" fontFamily="Inter" fontWeight="600" letterSpacing="1">KREA</text>
-      <text x="60" y="55" textAnchor="middle" fill="#444" fontSize="6" fontFamily="Inter">GPU-X</text>
-      
-      {/* Circuit trace lines */}
-      <line x1="5" y1="35" x2="25" y2="35" stroke="#1a1a1a" strokeWidth="2"/>
-      <line x1="95" y1="35" x2="115" y2="35" stroke="#1a1a1a" strokeWidth="2"/>
-      <line x1="5" y1="55" x2="25" y2="55" stroke="#1a1a1a" strokeWidth="2"/>
-      <line x1="95" y1="55" x2="115" y2="55" stroke="#1a1a1a" strokeWidth="2"/>
-      
-      <line x1="40" y1="5" x2="40" y2="20" stroke="#1a1a1a" strokeWidth="2"/>
-      <line x1="60" y1="5" x2="60" y2="20" stroke="#1a1a1a" strokeWidth="2"/>
-      <line x1="80" y1="5" x2="80" y2="20" stroke="#1a1a1a" strokeWidth="2"/>
-      
-      <line x1="40" y1="70" x2="40" y2="85" stroke="#1a1a1a" strokeWidth="2"/>
-      <line x1="60" y1="70" x2="60" y2="85" stroke="#1a1a1a" strokeWidth="2"/>
-      <line x1="80" y1="70" x2="80" y2="85" stroke="#1a1a1a" strokeWidth="2"/>
+    <svg width="100" height="100" viewBox="0 0 100 100" fill="none" className="mx-auto my-3">
+      <rect width="100" height="100" rx="6" fill="#0d0d0d" />
+      <line x1="33" y1="0" x2="33" y2="100" stroke="#1a1a1a" strokeWidth="0.5" />
+      <line x1="66" y1="0" x2="66" y2="100" stroke="#1a1a1a" strokeWidth="0.5" />
+      <line x1="0" y1="33" x2="100" y2="33" stroke="#1a1a1a" strokeWidth="0.5" />
+      <line x1="0" y1="66" x2="100" y2="66" stroke="#1a1a1a" strokeWidth="0.5" />
+      <rect x="28" y="28" width="44" height="44" rx="3" stroke="#2a2a2a" strokeWidth="1" fill="#111" />
+      <rect x="36" y="36" width="28" height="28" rx="2" stroke="#333" strokeWidth="0.5" fill="none" />
+      <circle cx="6" cy="6" r="2.5" fill="#22c55e" opacity="0.9" />
+      <circle cx="94" cy="6" r="2.5" fill="#22c55e" opacity="0.9" />
+      <circle cx="6" cy="94" r="2.5" fill="#22c55e" opacity="0.9" />
+      <circle cx="94" cy="94" r="2.5" fill="#22c55e" opacity="0.9" />
     </svg>
   );
 }
@@ -49,13 +34,19 @@ export default function ComputePacks() {
         </p>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+      <div className="flex flex-row gap-4 overflow-x-auto pb-2 justify-center">
         {PACKS.map((pack) => (
-          <div key={pack.amount} className="bg-[#111111] border border-[#1f1f1f] rounded-xl p-5 flex flex-col items-center">
-            <span className="text-white text-2xl font-bold">{pack.amount}</span>
-            <GPUChip />
-            <span className="text-white text-xl font-bold mb-4">${pack.price}</span>
-            <button disabled className="text-[#444444] border border-[#222222] rounded-full px-3 py-1 text-xs cursor-not-allowed w-full text-center">
+          <div
+            key={pack.amount}
+            className="bg-[#111111] border border-[#1f1f1f] rounded-xl p-4 flex flex-col items-center w-[180px] flex-shrink-0"
+          >
+            <span className="text-white text-3xl font-bold">{pack.amount}</span>
+            <ChipIllustration />
+            <span className="text-[#888888] text-xs mb-3">{pack.price}</span>
+            <button
+              disabled
+              className="w-full text-xs py-1.5 rounded-lg border border-[#333] text-[#666] cursor-default text-center"
+            >
               Pro plan required
             </button>
           </div>
