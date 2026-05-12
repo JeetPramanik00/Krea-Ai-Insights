@@ -1,0 +1,8 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "KjGpD5lPnnIXIQh7xXbuQ"
+uri = "file://artifacts/krea-pricing/public/hero-bg.png"
+type = "image"
+title = "Cinematic dark warrior silhouette"

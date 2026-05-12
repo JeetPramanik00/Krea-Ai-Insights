@@ -1,0 +1,274 @@
+# Krea Pricing Page — Agent Implementation Instructions
+
+## Tech Stack
+- **React + Vite + TypeScript**
+- **Tailwind CSS** (utility-first, no component libraries)
+- **No external UI kits** — everything hand-built
+
+---
+
+## 1. Global Design Tokens
+
+```
+Background: #0a0a0a (near-black)
+Surface cards: #111111 / #141414
+Border color: #222222 (subtle)
+Primary accent: #4f6ef7 (blue — used on Pro badge, CTA buttons)
+Green accent: #22c55e (checkmarks, "Most Popular" indicators)
+Text primary: #ffffff
+Text secondary: #888888 / #666666
+Text muted: #444444
+Font family: Inter (Google Fonts) — weights 300, 400, 500, 600, 700
+Border radius on cards: 12px–16px
+```
+
+---
+
+## 2. Page-Level Layout
+
+- Full-width, dark background `#0a0a0a`
+- Max content width: `1200px`, horizontally centered
+- All sections stacked vertically with generous padding (`py-24` between sections)
+- No sidebar — purely vertical scroll page
+
+---
+
+## 3. Section-by-Section Breakdown
+
+---
+
+### SECTION 1 — Hero Banner ("Why choose Krea")
+
+- Full-width dark section with a **cinematic background image** (samurai/warrior figure on the right, subtle dark overlay)
+- Left side: text content
+  - Small label: `"Why choose Krea"` — white, semibold, small caps feel
+  - Body copy below it (2–3 lines of gray secondary text about "world's best creative AI studio", "150+ models", "10 million users")
+- Right side: the background image bleeds into the frame (not a box, just positioned absolutely)
+- **Monthly / Yearly toggle** in top-right of this section
+  - Toggle pill switch — inactive state gray, active state white
+  - Next to it: a blue badge pill `"Save 20% on yearly plans"` — blue background `#4f6ef7`, white text, rounded-full
+
+---
+
+### SECTION 2 — Individual Plans (3 cards)
+
+**Label above:** `"For Individual Creators"` — white, ~20px, medium weight, left-aligned
+
+#### Card Structure (3 columns, equal width, ~380px each, gap-6):
+
+**Card 1 — Basic**
+- Title: `Basic` — white, 18px semibold
+- Subtitle: small gray text (e.g., "Access to our popular features on circle generations")
+- Price: `$9` — white, 48px bold; `/mo` in gray small text below
+- CTA Button: `Get Basic →` — outlined/ghost button, white border, white text, rounded-lg, full width
+- Below button: `5,000 compute units` in gray, centered
+- Divider line
+- Feature list with ✓ green checkmarks:
+  - Commercial license
+  - Full access to Image, 3D, and Lipsync models
+  - LoRA fine-tuning with up to 5G images
+  - Upscale & enhance to 4K
+  - Access to selected video models
+  - "See all features →" link in gray
+
+**Card 2 — Pro** *(highlighted — most popular)*
+- **Blue top border accent** or blue glow/ring
+- Badge above title: `"Most popular"` — blue pill, white text, small, rounded-full
+- Title: `Pro` — white, 18px semibold
+- Price: `$35` — white, 48px bold; `/mo` in gray
+- CTA: `Get Pro →` — **solid blue** `#4f6ef7` background, white text, full width, rounded-lg
+- `20,000 compute units` in gray
+- Feature list — same style but more items:
+  - Everything in Basic plan
+  - Access to all video models
+  - Workflow automation with Nodes and Apps
+  - AI-powered Nodes Agent (blue "new" badge)
+  - Bulk discounts on compute unit packs
+  - Upscale & enhance to 8K
+  - "See all features →"
+
+**Card 3 — Max**
+- Title: `Max`
+- Subtitle: "Maximum power for serious creators..."
+- Price: `$105` `/mo`
+- CTA: `Get Max →` — outlined button
+- `80,000 compute units`
+- Features:
+  - Everything in Pro plan
+  - Unlimited Luna fine-tunings with 2000 files
+  - Unlimited Concurrency
+  - Unlimited relaxed generations
+  - Upscale & enhance to 22K
+  - "See all features →"
+
+---
+
+### SECTION 3 — Teams & Enterprises Plans (2 cards)
+
+**Label:** `"For Teams and Enterprises"` — white, left-aligned
+Sub-label: small gray — "Workplace management, collaboration, and enterprise customizations"
+
+#### 2-column layout:
+
+**Card: Business**
+- Title: `Business`
+- Subtitle: gray text about "collaborative workspace for growing teams"
+- Price: `$200` `/mo` (or per seat — verify from image)
+- CTA: `To Business →` — outlined button, full width
+- `80,000 compute units`
+- Per-seat selectors shown: `1 5 10 MX 25 50 100 1K` — small pill/tab selector row in gray
+- Features list with checkmarks (longer list):
+  - Everything in Pro plan
+  - Business Terms of Service
+  - Up to 50 team seats
+  - Share private Node Apps with your team
+  - Train LoRAs with up to 10,000 images
+  - Unlimited relaxed generations
+  - Custom user roles and permissions
+  - Fine-grained controls for model access
+  - "See all features →"
+
+**Card: Enterprise**
+- Title: `Enterprise`
+- Subtitle: "Priority and enterprise support, access to Krea's advanced services and admin features to scale"
+- Price: `Custom pricing` — white text, large
+- CTA: `Contact Sales →` — outlined button
+- Features:
+  - Everything in Business plan
+  - Custom Terms of Service
+  - Priority support with SLA
+  - Analytics API
+  - Per-member spend limits
+  - Slack connect
+  - Custom compute packages
+  - Unlimited relaxed generations
+  - Audit logs (blue "new" badge)
+  - "See all features →"
+
+---
+
+### SECTION 4 — "Need More Compute?" (Compute Pack Add-ons)
+
+- Section title: `"Need More Compute?"` — white, centered, ~32px
+- Subtitle: gray paragraph text explaining one-time packs, 90-day validity
+- **5 cards in a horizontal row**, each identical in structure:
+  - Large bold number: `2000`, `5000`, `10000`, `24000`, `50000`
+  - Below: a stylized **chip/GPU icon graphic** (looks like a circuit/processor illustration) — dark card with glowing green or blue LED-style dots on corners
+  - Below chip: price text (e.g., `$X`)
+  - CTA button below: `"Pro plan required"` — gray disabled-style pill for most; first might be active
+  - Cards have a dark `#111` background, subtle border, rounded-xl
+- Footer note in small gray: `"Credits are added instantly after purchase and expire after 90 days"`
+
+---
+
+### SECTION 5 — "Compare Plans in Detail"
+
+- Title: `"Compare Plans in Detail"` — white, centered
+- Subtitle: gray text
+- **Left sidebar filter panel** (sticky or static):
+  - Categories: `Features & License`, `Usage & Compute Units`, `Teams & Admin`
+  - Below: `Models` section — `Image Generation`, `Video Generation`, `Other`
+  - Each is a clickable text item, selected state = white, unselected = gray
+- **Main comparison table** (right of sidebar):
+  - Column headers: `FREE`, `BASIC`, `PRO` (blue highlight), `MAX`, `BUSINESS`, `ENTERPRISE`
+  - Pro column has blue header background
+  - Row groups with category labels
+  - Rows include:
+    - Access to image models: `Limited` / `Limited` / ✓ / ✓ / ✓ / ✓
+    - Access to LoRA Training: `Limited` / `–` / `Limited` / ✓ / ✓ / ✓
+    - Access to 3D models: `Limited` / `–` / ✓ / ✓ / ✓ / ✓
+    - Access to lipsync models: `Limited` / `–` / ✓ / ✓ / ✓ / ✓
+    - Images: `1` / `4` / `8` / `Unlimited` / `Unlimited` / `Unlimited`
+    - Video concurrency: `–` / `2` / `4` / `Unlimited` / `Unlimited` / `Unlimited`
+    - Max images per LoRA: `50` / `50` / `50` / `2000` / `2000` / `Custom`
+    - Access to Krea Nodes: `–` / `–` / ✓ / ✓ / ✓ / ✓
+    - Access to App Builder: `–` / `–` / ✓ / ✓ / ✓ / ✓
+    - And more rows...
+  - Cell values: green ✓ for available, `–` gray dash for unavailable, text values as shown
+  - Alternating subtle row backgrounds (`#111` / `#0f0f0f`)
+  - Horizontal dividers between rows
+
+---
+
+### SECTION 6 — FAQ Accordion
+
+- Title: `"Frequently Asked Questions"` — white, centered, ~32px
+- **Accordion-style list** — each item:
+  - Question in white text (16px medium)
+  - Right side: `–` (expanded) or `+` (collapsed) toggle icon in white
+  - On expand: answer text in gray drops below
+  - No borders between except a subtle bottom line on each item
+- Questions listed (all collapsed by default except maybe first):
+  1. What's the difference between plans?
+  2. How do compute units work?
+  3. How do credit rollovers work?
+  4. Can we share projects and assets? *(has a `"Coming Soon"` blue badge)*
+  5. What is SAML SSO and why do I need it?
+  6. How does billing work?
+  7. What support options are available?
+  8. Do plans include a commercial license?
+  9. Can I switch between plans?
+  10. Is Business plan seat-based or team-based?
+  11. How do I add or remove members?
+  12. What happens if we exceed our compute units?
+
+---
+
+### SECTION 7 — Bottom CTA Banner
+
+- Centered layout, dark bg
+- Text: `"Still have questions?"` — white, ~24px
+- Subtext: `"Our team is here to help you choose the right plan for your organization."` — gray
+- Button: `Contact Sales` — solid blue `#4f6ef7`, white text, rounded-lg, ~px-8 py-3
+
+---
+
+## 4. Component Notes
+
+- **Monthly/Yearly Toggle**: Use a pill toggle with smooth transition. Toggling should update all prices.
+- **"New" badges**: Small inline pills, blue background, white text, `text-xs`, `rounded-full`, `px-2 py-0.5`
+- **"Coming Soon" badge**: Same pill style but different context (FAQ section)
+- **Checkmarks**: Use a custom SVG circle-check icon in `#22c55e`
+- **CTA Buttons**:
+  - Primary (Pro): `bg-[#4f6ef7] text-white hover:bg-blue-600`
+  - Outlined: `border border-[#333] text-white hover:border-white`
+- **Cards**: `bg-[#111] border border-[#1f1f1f] rounded-2xl p-6`
+- **Compute chip illustration**: Build as SVG or use a grid-based CSS art — dark rectangle, corner LED dots in green, grid lines inside
+
+---
+
+## 5. Responsiveness
+
+- Mobile: Stack all 3 plan cards vertically
+- Tablet: 2-column for Individual plans, 1-column for Teams
+- Desktop: Full multi-column layout as described
+- Comparison table: horizontal scroll on mobile
+
+---
+
+## 6. File Structure Suggestion
+
+```
+src/
+  components/
+    Hero.tsx
+    PlanCard.tsx
+    IndividualPlans.tsx
+    TeamPlans.tsx
+    ComputePacks.tsx
+    CompareTable.tsx
+    FAQAccordion.tsx
+    BottomCTA.tsx
+  App.tsx
+  index.css  ← Tailwind directives
+```
+
+---
+
+## Final Agent Notes
+
+- Do **not** use any UI component libraries (no shadcn, no Radix, no MUI)
+- All dark surfaces must be slightly different shades — avoid using a single flat black
+- The Pro card must visually stand out from the other two — use a blue top border `2px solid #4f6ef7` or a faint blue glow `box-shadow`
+- Spacing discipline: use Tailwind's spacing scale consistently (`gap-6`, `py-16`, `px-8`)
+- The compute pack chip graphic is central to Section 4 — invest time in making it look like a stylized GPU/chip illustration, not a placeholder box
