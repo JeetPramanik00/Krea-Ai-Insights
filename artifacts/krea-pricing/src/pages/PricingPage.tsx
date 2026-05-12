@@ -14,10 +14,10 @@ export default function PricingPage() {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white font-sans overflow-x-hidden selection:bg-[#4f6ef7] selection:text-white">
-      <Hero billingPeriod={billingPeriod} setBillingPeriod={setBillingPeriod} />
+      <Hero />
 
       <div className="max-w-[1200px] mx-auto px-8 py-10 space-y-16">
-        <IndividualPlans billingPeriod={billingPeriod} />
+        <IndividualPlans billingPeriod={billingPeriod} setBillingPeriod={setBillingPeriod} />
         <TeamPlans billingPeriod={billingPeriod} />
         <ComputePacks />
         <CompareTable />
